@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌋 Les volcans — CM2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --lava:#E8501A;--lava2:#F0920A;--sky:#1A6EC8;--earth:#5C3A10;
+  --teal:#0EA882;--purple:#7C3AED;--pink:#D946A8;--green:#16A34A;
+  --bg:#FFF8F0;--card:#fff;--border:#E8D5C0;--text:#2C1A08;--muted:#8B6540;
+  --r:14px;--rs:8px;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+.app{max-width:860px;margin:0 auto;}
+.hero{background:var(--lava);padding:20px 20px 16px;text-align:center;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:14px;background:var(--bg);border-radius:100% 100% 0 0 / 20px 20px 0 0;}
+.hero h1{font-size:1.8rem;font-weight:900;color:#fff;letter-spacing:-0.02em;}
+.hero p{font-size:0.85rem;color:rgba(255,255,255,0.85);margin-top:4px;}
+.lava-dots{display:flex;justify-content:center;gap:7px;margin-top:12px;margin-bottom:2px;}
+.lava-dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.35);transition:background 0.3s;}
+.lava-dot.on{background:#fff;}
+
+.nav{display:flex;gap:6px;padding:16px 16px 0;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;}
+.nav::-webkit-scrollbar{display:none;}
+.tab{display:flex;align-items:center;gap:5px;padding:9px 15px;border-radius:99px;font-size:0.82rem;font-weight:700;cursor:pointer;background:transparent;color:var(--muted);border:2px solid transparent;white-space:nowrap;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.tab i{font-size:16px;}
+.tab:hover{background:#F5E8DA;color:var(--lava);}
+.tab.on{background:var(--lava);color:#fff;border-color:var(--lava);}
+
+.panel{display:none;padding:18px;}
+.panel.on{display:block;}
+
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sec-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.sec-title{font-size:1rem;font-weight:800;color:var(--text);}
+.sec-sub{font-size:0.75rem;color:var(--muted);}
+
+.card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;margin-bottom:12px;}
+.card-accent{border-top:4px solid var(--lava);}
+.card-teal{border-top:4px solid var(--teal);}
+.card-purple{border-top:4px solid var(--purple);}
+.card-green{border-top:4px solid var(--green);}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px;}
+.stat{border-radius:var(--r);padding:14px 12px;text-align:center;border:1.5px solid var(--border);}
+.stat .ico{font-size:2rem;display:block;margin-bottom:5px;}
+.stat .num{font-size:1.5rem;font-weight:900;color:var(--lava);}
+.stat .lbl{font-size:0.72rem;font-weight:600;color:var(--muted);margin-top:3px;line-height:1.3;}
+
+.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-top:12px;}
+.type-card{border-radius:var(--r);padding:14px;border:2px solid transparent;}
+.type-card.effusif{background:#FFF3E0;border-color:#F0920A;}
+.type-card.explosif{background:#FFF0F0;border-color:#E8501A;}
+.type-card.sousmarin{background:#EFF6FF;border-color:#1A6EC8;}
+.type-ico{font-size:2.2rem;display:block;margin-bottom:7px;}
+.type-name{font-size:0.92rem;font-weight:800;margin-bottom:4px;}
+.type-card.effusif .type-name{color:#854F0B;}
+.type-card.explosif .type-name{color:#A32D2D;}
+.type-card.sousmarin .type-name{color:#0C447C;}
+.type-desc{font-size:0.79rem;line-height:1.65;color:var(--muted);}
+
+.body-text{font-size:0.88rem;line-height:1.8;color:#4A3020;}
+.hl{color:var(--lava);font-weight:700;}
+.hl2{color:var(--sky);font-weight:700;}
+.hl3{color:var(--teal);font-weight:700;}
+
+/* ANATOMY */
+.anat-wrap{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;}
+.layer-box{background:#FFF8F0;border:2px solid var(--border);border-radius:var(--r);padding:13px;min-height:80px;margin-bottom:10px;}
+.layer-box h3{font-size:0.9rem;font-weight:800;margin-bottom:6px;}
+.layer-box p{font-size:0.82rem;line-height:1.68;color:var(--muted);}
+.leg-list{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.leg-btn{display:flex;align-items:center;gap:7px;padding:9px 10px;border-radius:var(--rs);background:#FFF3E0;border:1.5px solid var(--border);cursor:pointer;transition:all 0.12s;font-size:0.79rem;font-weight:700;color:var(--text);font-family:'Nunito',sans-serif;}
+.leg-btn:hover{border-color:var(--lava);background:#FFE8D4;}
+.leg-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+
+/* VOLCANS */
+.vlist-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);margin-bottom:9px;transition:all 0.12s;}
+.vlist-item:hover{border-color:var(--lava2);background:#FFFAF5;}
+.vico{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;}
+.vname{font-size:0.92rem;font-weight:800;color:var(--text);}
+.vloc{font-size:0.76rem;color:var(--muted);margin-top:2px;}
+.vtag{display:inline-block;padding:2px 9px;border-radius:99px;font-size:0.68rem;font-weight:700;margin-top:5px;}
+.vtag.eff{background:#FFF3E0;color:#854F0B;}
+.vtag.exp{background:#FFF0F0;color:#A32D2D;}
+.vtag.mix{background:#EFF6FF;color:#0C447C;}
+.ceinture-box{background:#EFF6FF;border:2px solid #1A6EC8;border-radius:var(--r);padding:15px;margin-top:4px;}
+.ceinture-box h3{font-size:0.92rem;font-weight:800;color:#0C447C;margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.ceinture-box p{font-size:0.83rem;line-height:1.72;color:#1e40af;}
+
+/* PLAN */
+.goal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;}
+.goal-item{padding:9px 11px;background:#FFF8F0;border-radius:8px;font-size:0.79rem;line-height:1.6;color:#4A3020;}
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.mat-col-title{font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.mat-list{font-size:0.79rem;line-height:1.9;color:var(--muted);}
+.timeline{position:relative;padding-left:38px;margin-top:4px;}
+.timeline::before{content:'';position:absolute;left:17px;top:0;bottom:0;width:3px;background:var(--border);border-radius:99px;}
+.titem{position:relative;margin-bottom:12px;}
+.titem::before{content:'';position:absolute;left:-25px;top:14px;width:14px;height:14px;border-radius:50%;background:var(--lava);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--lava);}
+.tcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:11px 14px;}
+.ttime{display:inline-block;padding:2px 10px;border-radius:99px;font-size:0.7rem;font-weight:700;background:var(--lava);color:#fff;margin-bottom:6px;}
+.tphase{display:inline-block;padding:2px 9px;border-radius:99px;font-size:0.68rem;font-weight:700;margin-left:6px;}
+.ttitle{font-size:0.88rem;font-weight:800;margin-bottom:4px;color:var(--text);}
+.tdesc{font-size:0.8rem;line-height:1.65;color:var(--muted);}
+
+/* QUIZ */
+.qbar-wrap{background:#E8D5C0;border-radius:99px;height:11px;margin-bottom:16px;overflow:hidden;}
+.qbar{height:100%;background:var(--lava);border-radius:99px;transition:width 0.4s;}
+.qcard{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:20px;}
+.qnum{font-size:0.76rem;font-weight:700;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.qnum-badge{background:var(--lava);color:#fff;padding:3px 11px;border-radius:99px;font-size:0.72rem;font-weight:700;}
+.qq{font-size:0.97rem;font-weight:800;line-height:1.55;margin-bottom:14px;color:var(--text);}
+.opts{display:flex;flex-direction:column;gap:8px;}
+.opt{padding:12px 15px;border:2px solid var(--border);border-radius:var(--r);text-align:left;cursor:pointer;background:#FFFAF5;color:var(--text);font-size:0.86rem;font-weight:600;transition:all 0.15s;font-family:'Nunito',sans-serif;}
+.opt:hover:not(:disabled){border-color:var(--lava2);background:#FFF3E0;}
+.opt.correct{background:#F0FDF4;border-color:#16A34A;color:#14532D;}
+.opt.wrong{background:#FFF5F5;border-color:#E8501A;color:#7F1D1D;}
+.feedback{margin-top:12px;padding:12px 14px;border-radius:var(--r);font-size:0.83rem;line-height:1.68;display:none;}
+.feedback.show{display:block;}
+.feedback.good{background:#F0FDF4;border:1.5px solid #16A34A;color:#14532D;}
+.feedback.bad{background:#FFF5F5;border:1.5px solid #E8501A;color:#7F1D1D;}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:14px;}
+.nbtn{padding:9px 22px;border:2px solid var(--lava);border-radius:99px;cursor:pointer;background:var(--lava);color:#fff;font-size:0.84rem;font-weight:700;font-family:'Nunito',sans-serif;transition:all 0.12s;}
+.nbtn:hover{background:#C84010;}
+.qscore{font-size:0.8rem;color:var(--muted);font-weight:600;}
+.final{text-align:center;padding:28px 0;}
+.final-score{font-size:4rem;font-weight:900;color:var(--lava);}
+.final-stars{font-size:2rem;margin:8px 0;}
+.final-msg{font-size:0.92rem;color:var(--muted);font-weight:600;margin-top:4px;}
+.rbtn{margin-top:18px;padding:11px 28px;border:2px solid var(--lava);border-radius:99px;cursor:pointer;background:#fff;color:var(--lava);font-size:0.9rem;font-weight:700;font-family:'Nunito',sans-serif;}
+
+/* EVAL */
+.eval-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px;}
+.eval-card{border-radius:var(--r);padding:13px;text-align:center;border:2px solid transparent;}
+.eval-card .eico{font-size:1.7rem;display:block;margin-bottom:6px;}
+.eval-card .enom{font-size:0.82rem;font-weight:800;}
+.eval-card .edesc{font-size:0.73rem;margin-top:5px;line-height:1.5;}
+.ec-tbm{background:#F0FDF4;border-color:#16A34A;color:#14532D;}
+.ec-s{background:#EFF6FF;border-color:#1A6EC8;color:#0C447C;}
+.ec-pa{background:#FFFBEB;border-color:#F0920A;color:#854F0B;}
+.ec-na{background:#FFF5F5;border-color:#E8501A;color:#7F1D1D;}
+.crit-item{display:flex;align-items:flex-start;gap:10px;padding:9px 11px;background:#FFF8F0;border-radius:9px;margin-bottom:7px;}
+.prol-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border);}
+.prol-item:last-child{border-bottom:none;}
+.prol-ico{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="hero">
+  <div class="lava-dots" id="ldots"></div>
+  <h1>🌋 Les volcans</h1>
+  <p>Application CM2 &mdash; Sciences &amp; Géographie &mdash; 45 minutes</p>
+</div>
+
+<div class="nav">
+  <button class="tab on" onclick="go('decouverte',this)"><i class="ti ti-sparkles"></i> Découverte</button>
+  <button class="tab" onclick="go('anatomie',this)"><i class="ti ti-eye"></i> Anatomie</button>
+  <button class="tab" onclick="go('volcans',this)"><i class="ti ti-world"></i> Volcans</button>
+  <button class="tab" onclick="go('plan',this)"><i class="ti ti-clock"></i> Plan 45 min</button>
+  <button class="tab" onclick="go('quiz',this)"><i class="ti ti-help-circle"></i> Quiz</button>
+  <button class="tab" onclick="go('eval',this)"><i class="ti ti-star"></i> Évaluation</button>
+</div>
+
+<!-- DÉCOUVERTE -->
+<div id="tab-decouverte" class="panel on">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:#FFF3E0;">🔥</div>
+    <div><div class="sec-title">Le saviez-vous ?</div><div class="sec-sub">Quelques chiffres impressionnants</div></div>
+  </div>
+  <div class="stat-grid">
+    <div class="stat" style="background:#FFF8F0;"><span class="ico">🌍</span><div class="num">1 500</div><div class="lbl">Volcans actifs sur Terre</div></div>
+    <div class="stat" style="background:#FFF0F0;"><span class="ico">💥</span><div class="num">50–70</div><div class="lbl">Éruptions par an</div></div>
+    <div class="stat" style="background:#FFFBF0;"><span class="ico">🌡️</span><div class="num">800°C</div><div class="lbl">Température de la lave</div></div>
+    <div class="stat" style="background:#F0FFF8;"><span class="ico">👥</span><div class="num">500 M</div><div class="lbl">Personnes vivant près d'un volcan</div></div>
+  </div>
+
+  <div class="card card-accent">
+    <div class="sec-head" style="margin-bottom:10px">
+      <div class="sec-icon" style="background:#FFF3E0;font-size:1.1rem;">🌋</div>
+      <div><div class="sec-title" style="font-size:0.94rem">Qu'est-ce qu'un volcan ?</div></div>
+    </div>
+    <p class="body-text">Un volcan est une ouverture dans la croûte terrestre par laquelle du <span class="hl">magma</span> (roche fondue), des gaz et des cendres s'échappent depuis les profondeurs de la Terre. Quand le magma sort en surface, on l'appelle la <span class="hl">lave</span>. Une éruption peut être <span class="hl">explosive</span> ou <span class="hl2">effusive</span> selon la fluidité de la lave.</p>
+  </div>
+
+  <div class="card card-teal">
+    <div class="sec-head" style="margin-bottom:10px">
+      <div class="sec-icon" style="background:#ECFDF5;font-size:1.1rem;">🤔</div>
+      <div><div class="sec-title" style="font-size:0.94rem">Pourquoi les volcans entrent-ils en éruption ?</div></div>
+    </div>
+    <p class="body-text">L'intérieur de la Terre est extrêmement chaud. Le magma est <span class="hl3">moins dense</span> que les roches solides qui l'entourent — il remonte vers la surface comme une bulle d'huile dans l'eau. Quand la <span class="hl">pression</span> devient trop forte, il s'échappe par le cratère !</p>
+  </div>
+
+  <div class="card">
+    <div class="sec-head" style="margin-bottom:10px">
+      <div class="sec-icon" style="background:#F5F3FF;font-size:1.1rem;">📚</div>
+      <div><div class="sec-title" style="font-size:0.94rem">Les 3 types de volcans</div></div>
+    </div>
+    <div class="type-grid">
+      <div class="type-card effusif">
+        <span class="type-ico">🌊</span>
+        <div class="type-name">Effusif</div>
+        <p class="type-desc">Lave fluide qui coule doucement. Ex : <strong>Piton de la Fournaise</strong> (La Réunion).</p>
+      </div>
+      <div class="type-card explosif">
+        <span class="type-ico">💥</span>
+        <div class="type-name">Explosif</div>
+        <p class="type-desc">Lave visqueuse, grosses explosions, cendres. Ex : <strong>Vésuve</strong> (Italie).</p>
+      </div>
+      <div class="type-card sousmarin">
+        <span class="type-ico">🌊</span>
+        <div class="type-name">Sous-marin</div>
+        <p class="type-desc">Au fond des océans, peut former des îles. Ex : <strong>Kīlauea</strong> (Hawaï).</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANATOMIE -->
+<div id="tab-anatomie" class="panel">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:#FFF3E0;">🔍</div>
+    <div><div class="sec-title">Anatomie du volcan</div><div class="sec-sub">Clique sur une partie pour l'explorer</div></div>
+  </div>
+  <div class="anat-wrap">
+    <div style="flex:0 0 auto;">
+      <svg viewBox="0 0 280 300" width="260" height="280" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0" y="248" width="280" height="52" fill="#5C3A10"/>
+        <rect x="0" y="268" width="280" height="32" fill="#3D2408"/>
+        <ellipse cx="140" cy="278" rx="72" ry="24" fill="#E8A020" stroke="#C07010" stroke-width="2" onclick="showL('magma')" style="cursor:pointer"/>
+        <text x="140" y="283" text-anchor="middle" font-size="10" fill="#3a2000" font-family="Nunito,sans-serif" font-weight="700">Chambre magmatique</text>
+        <polygon points="122,250 158,250 146,162 134,162" fill="#E05050" onclick="showL('conduit')" style="cursor:pointer"/>
+        <polygon points="28,250 252,250 188,92 92,92" fill="#8B6540"/>
+        <polygon points="92,92 188,92 172,52 108,52" fill="#5C3A10"/>
+        <path d="M108,52 Q72,72 36,132 Q18,162 26,192" stroke="#E8A020" stroke-width="6" fill="none" stroke-linecap="round" onclick="showL('lave')" style="cursor:pointer"/>
+        <path d="M172,52 Q210,78 236,142 Q250,172 242,202" stroke="#E05050" stroke-width="5" fill="none" stroke-linecap="round" onclick="showL('lave')" style="cursor:pointer"/>
+        <ellipse cx="140" cy="52" rx="26" ry="9" fill="#2C1A08" stroke="#8B6540" stroke-width="1.5" onclick="showL('cratere')" style="cursor:pointer"/>
+        <text x="140" y="57" text-anchor="middle" font-size="10" fill="#E8D5C0" font-family="Nunito,sans-serif" font-weight="700">Cratère</text>
+        <ellipse cx="132" cy="34" rx="10" ry="7" fill="#888" opacity="0.5"/>
+        <ellipse cx="145" cy="22" rx="14" ry="9" fill="#999" opacity="0.4"/>
+        <ellipse cx="138" cy="11" rx="16" ry="9" fill="#aaa" opacity="0.3"/>
+        <text x="32" y="166" font-size="10" fill="#E8A020" font-family="Nunito,sans-serif" font-weight="700" onclick="showL('lave')" style="cursor:pointer">Lave 🔥</text>
+        <text x="162" y="208" font-size="10" fill="#E05050" font-family="Nunito,sans-serif" font-weight="700" onclick="showL('conduit')" style="cursor:pointer">Cheminée</text>
+        <path d="M176,122 Q204,112 228,117" stroke="#D45050" stroke-width="4" fill="none" stroke-linecap="round" onclick="showL('flanc')" style="cursor:pointer"/>
+        <text x="230" y="116" font-size="9" fill="#C04040" font-family="Nunito,sans-serif" font-weight="700" onclick="showL('flanc')" style="cursor:pointer">Bouche sec.</text>
+      </svg>
+    </div>
+    <div style="flex:1;min-width:190px;">
+      <div class="layer-box" id="linfo">
+        <h3 style="color:var(--lava)">👆 Clique sur le schéma !</h3>
+        <p>Sélectionne une partie du volcan pour découvrir son explication.</p>
+      </div>
+      <div class="leg-list">
+        <button class="leg-btn" onclick="showL('cratere')"><span class="leg-dot" style="background:#2C1A08"></span>Cratère</button>
+        <button class="leg-btn" onclick="showL('lave')"><span class="leg-dot" style="background:#E8A020"></span>Lave</button>
+        <button class="leg-btn" onclick="showL('conduit')"><span class="leg-dot" style="background:#E05050"></span>Cheminée</button>
+        <button class="leg-btn" onclick="showL('magma')"><span class="leg-dot" style="background:#E8A020"></span>Chambre</button>
+        <button class="leg-btn" onclick="showL('flanc')"><span class="leg-dot" style="background:#C04040"></span>Bouche sec.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VOLCANS -->
+<div id="tab-volcans" class="panel">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:#EFF6FF;">🗺️</div>
+    <div><div class="sec-title">Volcans célèbres</div><div class="sec-sub">6 volcans incontournables</div></div>
+  </div>
+
+  <div class="vlist-item"><div class="vico" style="background:#FFF3E0">🌋</div><div><div class="vname">Piton de la Fournaise</div><div class="vloc">🇫🇷 Île de La Réunion, France</div><span class="vtag eff">Effusif</span><span class="vtag mix" style="margin-left:4px">Très actif</span><div class="vloc" style="margin-top:5px">Coulées de lave fréquentes — volcan français le plus connu</div></div></div>
+  <div class="vlist-item"><div class="vico" style="background:#FFF0F0">🔥</div><div><div class="vname">Vésuve</div><div class="vloc">🇮🇹 Italie</div><span class="vtag exp">Explosif</span><div class="vloc" style="margin-top:5px">Détruisit Pompéi en 79 apr. J.-C. sous des cendres</div></div></div>
+  <div class="vlist-item"><div class="vico" style="background:#ECFDF5">🏝️</div><div><div class="vname">Kīlauea</div><div class="vloc">🇺🇸 Hawaï, États-Unis</div><span class="vtag eff">Effusif</span><div class="vloc" style="margin-top:5px">Parmi les volcans les plus actifs du monde</div></div></div>
+  <div class="vlist-item"><div class="vico" style="background:#EFF6FF">❄️</div><div><div class="vname">Eyjafjallajökull</div><div class="vloc">🇮🇸 Islande</div><span class="vtag exp">Explosif</span><div class="vloc" style="margin-top:5px">Nuage de cendres en 2010 — trafic aérien paralysé</div></div></div>
+  <div class="vlist-item"><div class="vico" style="background:#F0FDF4">🌿</div><div><div class="vname">Etna</div><div class="vloc">🇮🇹 Sicile, Italie</div><span class="vtag mix">Mixte</span><div class="vloc" style="margin-top:5px">Plus haut volcan d'Europe — 3 357 m</div></div></div>
+  <div class="vlist-item"><div class="vico" style="background:#FFF8F0">🌏</div><div><div class="vname">Krakatoa</div><div class="vloc">🇮🇩 Indonésie</div><span class="vtag exp">Explosif</span><div class="vloc" style="margin-top:5px">Éruption de 1883 — entendue à 5 000 km</div></div></div>
+
+  <div class="ceinture-box">
+    <h3>🌐 La Ceinture de feu du Pacifique</h3>
+    <p>Plus de <strong>75 %</strong> des volcans actifs se trouvent autour de l'océan Pacifique. C'est là que les <strong>plaques tectoniques</strong> se rencontrent et glissent les unes sous les autres, libérant une énergie colossale.</p>
+  </div>
+</div>
+
+<!-- PLAN 45 MIN -->
+<div id="tab-plan" class="panel">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:#FFF3E0;">⏱️</div>
+    <div><div class="sec-title">Plan de séance — 45 minutes</div><div class="sec-sub">Objectifs, matériel, déroulement</div></div>
+  </div>
+
+  <div class="card card-accent">
+    <div style="font-size:0.87rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;">🎯 Objectifs</div>
+    <div class="goal-grid">
+      <div class="goal-item"><strong>Nommer</strong> les parties d'un volcan (cratère, lave, cheminée, chambre magmatique)</div>
+      <div class="goal-item"><strong>Comprendre</strong> le mécanisme d'une éruption (pression → remontée du magma)</div>
+      <div class="goal-item"><strong>Distinguer</strong> volcan effusif et explosif</div>
+      <div class="goal-item"><strong>Localiser</strong> des volcans sur un planisphère + identifier la Ceinture de feu</div>
+    </div>
+  </div>
+
+  <div class="card card-purple">
+    <div style="font-size:0.87rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;">🎒 Matériel nécessaire</div>
+    <div class="mat-grid">
+      <div>
+        <div class="mat-col-title" style="color:var(--purple)">Pour l'enseignant</div>
+        <div class="mat-list">📺 Vidéoprojecteur / TNI<br>🎬 Vidéo éruption (2 min)<br>🗺️ Planisphère mural<br>📊 Diaporama (6 diapositives)</div>
+      </div>
+      <div>
+        <div class="mat-col-title" style="color:var(--purple)">Pour les élèves</div>
+        <div class="mat-list">📄 Fiche schéma muet<br>🗺️ Fiche carte planisphère<br>🖍️ Crayons de couleur<br>🪣 Ardoise individuelle</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-head" style="margin-bottom:10px">
+    <div class="sec-icon" style="background:#FFF3E0;font-size:1rem;">📋</div>
+    <div><div class="sec-title" style="font-size:0.9rem">Déroulement minute par minute</div></div>
+  </div>
+
+  <div class="timeline">
+    <div class="titem"><div class="tcard"><span class="ttime">0 – 5 min</span><span class="tphase" style="background:#FFF3E0;color:#854F0B">Entrée</span><div class="ttitle">🎬 Vidéo + représentations initiales</div><div class="tdesc">Diffusion d'une éruption du Piton de la Fournaise (2 min). Questions orales : « Qu'est-ce que vous voyez ? » Recueil des représentations sur ardoise (mot ou dessin flash).</div></div></div>
+    <div class="titem"><div class="tcard"><span class="ttime">5 – 15 min</span><span class="tphase" style="background:#EFF6FF;color:#1E40AF">Leçon</span><div class="ttitle">📊 Schéma légendé + 3 types de volcans</div><div class="tdesc">Projection du schéma en coupe avec description de chaque partie. Explication effusif vs explosif avec deux images contrastées. Questions-réponses rapides.</div></div></div>
+    <div class="titem"><div class="tcard"><span class="ttime">15 – 27 min</span><span class="tphase" style="background:#ECFDF5;color:#065F46">Activité 1</span><div class="ttitle">✏️ Schéma muet à légender</div><div class="tdesc">Les élèves légendent le volcan (5 parties) et colorient : rouge = lave, orange = magma, gris = cendres. Correction collective au tableau — un élève vient légender le schéma projeté.</div></div></div>
+    <div class="titem"><div class="tcard"><span class="ttime">27 – 37 min</span><span class="tphase" style="background:#F5F3FF;color:#5B21B6">Activité 2</span><div class="ttitle">🗺️ Carte + Ceinture de feu</div><div class="tdesc">Sur une carte planisphère, placer 5 volcans célèbres (Piton de la Fournaise, Vésuve, Etna, Kīlauea, Krakatoa) et colorier la Ceinture de feu. Discussion : « Que remarques-tu ? »</div></div></div>
+    <div class="titem"><div class="tcard"><span class="ttime">37 – 42 min</span><span class="tphase" style="background:#FDF2F8;color:#831843">Synthèse</span><div class="ttitle">📝 Trace écrite collective</div><div class="tdesc">Construction au tableau par dictée à l'enseignant. Trace à coller ou recopier dans le cahier de sciences.</div></div></div>
+    <div class="titem"><div class="tcard"><span class="ttime">42 – 45 min</span><span class="tphase" style="background:#FFF0F0;color:#A32D2D">Éval. formative</span><div class="ttitle">🙋 Quiz pouce levé / ardoise</div><div class="tdesc">4 questions rapides : température lave, définition magma/lave, différence effusif/explosif, nom d'un volcan français.</div></div></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="tab-quiz" class="panel">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:#FFF3E0;">🧠</div>
+    <div><div class="sec-title">Quiz — teste tes connaissances !</div><div class="sec-sub">7 questions sur les volcans</div></div>
+  </div>
+  <div class="qbar-wrap"><div class="qbar" id="qbar" style="width:0%"></div></div>
+  <div id="quiz-body"></div>
+</div>
+
+<!-- ÉVALUATION -->
+<div id="tab-eval" class="panel">
+  <div class="sec-head">
+    <div class="sec-icon" style="background:#FFFBEB;">⭐</div>
+    <div><div class="sec-title">Évaluation sommative</div><div class="sec-sub">Grille de compétences CM2</div></div>
+  </div>
+
+  <div class="eval-grid">
+    <div class="eval-card ec-tbm"><span class="eico">🏆</span><div class="enom">Dépassé (TBM)</div><div class="edesc">Toutes les compétences + vocabulaire précis et spontané</div></div>
+    <div class="eval-card ec-s"><span class="eico">✅</span><div class="enom">Atteint (S)</div><div class="edesc">Schéma correct, 3 volcans placés, mécanisme expliqué</div></div>
+    <div class="eval-card ec-pa"><span class="eico">🔶</span><div class="enom">Partiellement (PA)</div><div class="edesc">Schéma partiel, 1–2 volcans, mécanisme incomplet</div></div>
+    <div class="eval-card ec-na"><span class="eico">❌</span><div class="enom">Non atteint (NA)</div><div class="edesc">Schéma lacunaire, confusion magma/lave</div></div>
+  </div>
+
+  <div class="card card-accent">
+    <div style="font-size:0.87rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;">📋 Critères d'évaluation</div>
+    <div class="crit-item"><span style="font-size:1.1rem">🗂️</span><div><div style="font-size:0.84rem;font-weight:700;color:var(--text)">Schéma légendé</div><div style="font-size:0.77rem;color:var(--muted);margin-top:2px;line-height:1.5">5 parties nommées correctement · coloriage cohérent avec la signification</div></div></div>
+    <div class="crit-item"><span style="font-size:1.1rem">📖</span><div><div style="font-size:0.84rem;font-weight:700;color:var(--text)">Vocabulaire</div><div style="font-size:0.77rem;color:var(--muted);margin-top:2px;line-height:1.5">Utilise magma/lave, cratère, cheminée · distingue effusif/explosif en une phrase</div></div></div>
+    <div class="crit-item"><span style="font-size:1.1rem">🗺️</span><div><div style="font-size:0.84rem;font-weight:700;color:var(--text)">Localisation</div><div style="font-size:0.77rem;color:var(--muted);margin-top:2px;line-height:1.5">Situe 3 volcans sur 5 sur le planisphère · identifie et colorie la Ceinture de feu</div></div></div>
+    <div class="crit-item" style="margin-bottom:0"><span style="font-size:1.1rem">💡</span><div><div style="font-size:0.84rem;font-weight:700;color:var(--text)">Compréhension du mécanisme</div><div style="font-size:0.77rem;color:var(--muted);margin-top:2px;line-height:1.5">Explique en 2 phrases : pression → remontée du magma → éruption</div></div></div>
+  </div>
+
+  <div class="card card-teal">
+    <div style="font-size:0.87rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:7px;">🚀 Prolongements possibles</div>
+    <div class="prol-item"><div class="prol-ico" style="background:#FFF3E0">🧪</div><div><div style="font-size:0.83rem;font-weight:700;color:var(--text)">Expérience bicarbonate + vinaigre</div><div style="font-size:0.76rem;color:var(--muted)">Simuler une éruption et nommer chaque élément</div></div></div>
+    <div class="prol-item"><div class="prol-ico" style="background:#EFF6FF">✍️</div><div><div style="font-size:0.83rem;font-weight:700;color:var(--text)">Journal d'un habitant de Pompéi</div><div style="font-size:0.76rem;color:var(--muted)">Production écrite avec le vocabulaire du cours</div></div></div>
+    <div class="prol-item"><div class="prol-ico" style="background:#ECFDF5">🔎</div><div><div style="font-size:0.83rem;font-weight:700;color:var(--text)">Fiche d'identité d'un volcan</div><div style="font-size:0.76rem;color:var(--muted)">Exposé : nom, pays, type, hauteur, dernière éruption</div></div></div>
+    <div class="prol-item"><div class="prol-ico" style="background:#FDF2F8">🎨</div><div><div style="font-size:0.83rem;font-weight:700;color:var(--text)">Maquette en papier mâché</div><div style="font-size:0.76rem;color:var(--muted)">Arts visuels — volcan en 3D avec éruption simulée</div></div></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const dots = document.getElementById('ldots');
+for(let i=0;i<7;i++){const d=document.createElement('div');d.className='lava-dot'+(i===0?' on':'');dots.appendChild(d);}
+let di=0;setInterval(()=>{dots.children[di].classList.remove('on');di=(di+1)%7;dots.children[di].classList.add('on');},600);
+
+function go(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('tab-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='quiz') renderQuiz();
+}
+
+const layers={
+  cratere:{title:'🕳️ Le cratère',color:'#2C1A08',text:"Le cratère est l'ouverture au sommet du volcan par laquelle sortent la lave, les gaz et les cendres lors d'une éruption. Il peut mesurer de quelques mètres à plusieurs kilomètres de diamètre."},
+  lave:{title:'🔥 La lave',color:'#E8501A',text:"La lave, c'est le magma qui a atteint la surface. À plus de 700 °C, elle peut couler sur des dizaines de kilomètres avant de refroidir et de former de nouvelles roches volcaniques (basalte, obsidienne…)."},
+  conduit:{title:'⬆️ La cheminée volcanique',color:'#C04040',text:"La cheminée est le canal par lequel le magma remonte de la chambre magmatique jusqu'au cratère. La pression des gaz pousse le magma vers le haut, comme dans une bouteille de soda secouée !"},
+  magma:{title:'💛 La chambre magmatique',color:'#C07010',text:"Située à plusieurs km de profondeur, c'est un immense réservoir de roche fondue (magma) et de gaz. Quand la pression y est trop forte, le magma remonte vers le cratère."},
+  flanc:{title:'↗️ La bouche secondaire',color:'#A03030',text:"Parfois le magma ne sort pas uniquement par le sommet. Il peut trouver des fissures sur les flancs et s'échapper par des bouches secondaires, créant des coulées latérales."},
+};
+function showL(id){
+  const l=layers[id];
+  document.getElementById('linfo').innerHTML='<h3 style="color:'+l.color+'">'+l.title+'</h3><p>'+l.text+'</p>';
+}
+
+const questions=[
+  {q:"Comment appelle-t-on la roche fondue qui se trouve sous la surface de la Terre ?",opts:["La lave 🔴","Le magma 🟠","Le granite 🪨","Le basalte ⚫"],ans:1,exp:"Sous la Terre, on parle de <strong>magma</strong>. Une fois sorti à la surface par le cratère, il s'appelle <strong>lave</strong> !"},
+  {q:"Quelle est la partie du volcan par laquelle sort la lave ?",opts:["La cheminée 🕳️","La chambre magmatique 🌡️","Le cratère 🔝","Le flanc ⛰️"],ans:2,exp:"Le <strong>cratère</strong> est l'ouverture au sommet. C'est la sortie principale lors d'une éruption."},
+  {q:"Un volcan effusif se caractérise par…",opts:["Des explosions très violentes 💥","Une lave fluide qui coule doucement 🌊","D'immenses nuages de cendres ☁️","Un silence complet 🤫"],ans:1,exp:"Les volcans effusifs produisent une lave peu visqueuse qui <strong>coule facilement</strong>. Le Piton de la Fournaise en est un parfait exemple !"},
+  {q:"Quelle ville antique a été détruite par le Vésuve en 79 apr. J.-C. ?",opts:["Rome 🏛️","Athènes 🏺","Pompéi 🌋","Carthage ⚓"],ans:2,exp:"<strong>Pompéi</strong> a été ensevelie sous les cendres du Vésuve. La ville a été retrouvée presque intacte lors de fouilles archéologiques !"},
+  {q:"Où se trouve la majorité des volcans actifs de la planète ?",opts:["En Afrique 🦁","En Europe 🏰","Autour du Pacifique 🌊","En Antarctique 🧊"],ans:2,exp:"La <strong>Ceinture de feu du Pacifique</strong> concentre plus de 75 % des volcans actifs, à cause des mouvements des plaques tectoniques."},
+  {q:"Combien y a-t-il environ de volcans actifs sur Terre ?",opts:["50 🤏","300 🙂","1 500 😲","10 000 🤯"],ans:2,exp:"Il y a environ <strong>1 500 volcans actifs</strong> sur Terre, dont 50 à 70 entrent en éruption chaque année !"},
+  {q:"À quelle température peut atteindre la lave ?",opts:["200 °C 🥵","500 °C 🔶","800 °C 🔥","3 000 °C ☀️"],ans:2,exp:"La lave peut atteindre <strong>800 °C à 1 200 °C</strong> — c'est pour ça qu'elle fait fondre tout ce qu'elle touche sur son passage !"},
+];
+
+let cur=0,score=0,answered=false;
+function renderQuiz(){
+  if(cur>=questions.length){
+    const pct=Math.round(score/questions.length*100);
+    const stars=pct>=86?'⭐⭐⭐':pct>=57?'⭐⭐':'⭐';
+    const msg=pct>=86?'Excellent ! Tu es un vrai géologue !':pct>=57?'Bien joué ! Continue à réviser.':'Relis les autres onglets et réessaie !';
+    document.getElementById('quiz-body').innerHTML='<div class="final"><div class="final-score">'+score+'/'+questions.length+'</div><div class="final-stars">'+stars+'</div><div class="final-msg">'+msg+'</div><button class="rbtn" onclick="resetQuiz()">🔄 Recommencer</button></div>';
+    document.getElementById('qbar').style.width='100%';
+    return;
+  }
+  const q=questions[cur];
+  document.getElementById('qbar').style.width=Math.round(cur/questions.length*100)+'%';
+  document.getElementById('quiz-body').innerHTML='<div class="qcard"><div class="qnum"><span class="qnum-badge">Q'+(cur+1)+'/'+questions.length+'</span></div><div class="qq">'+q.q+'</div><div class="opts">'+q.opts.map((o,i)=>'<button class="opt" onclick="answer('+i+')">'+o+'</button>').join('')+'</div><div class="feedback" id="qfb"></div><div class="qnav"><span class="qscore">Score : '+score+' ✅</span><button class="nbtn" id="nbtn" style="display:none" onclick="nextQ()">Question suivante →</button></div></div>';
+  answered=false;
+}
+function answer(i){
+  if(answered)return;
+  answered=true;
+  const q=questions[cur];
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const fb=document.getElementById('qfb');
+  if(i===q.ans){score++;document.querySelectorAll('.opt')[i].classList.add('correct');fb.className='feedback show good';fb.innerHTML='✅ '+q.exp;}
+  else{document.querySelectorAll('.opt')[i].classList.add('wrong');document.querySelectorAll('.opt')[q.ans].classList.add('correct');fb.className='feedback show bad';fb.innerHTML='❌ '+q.exp;}
+  document.getElementById('nbtn').style.display='inline-block';
+}
+function nextQ(){cur++;renderQuiz();}
+function resetQuiz(){cur=0;score=0;renderQuiz();}
+</script>
+</body>
+</html>
